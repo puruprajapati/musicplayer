@@ -23,12 +23,13 @@
         <img class="header-logo-1" logo=image src="./images/logo-1.png" alt="logo">
         <img class="header-logo-2" logo=image src="./images/logo-2.png" alt="logo">
       </a>
+
       <div id="logoutModule">
         <div class="collapse navbar-collapse justify-content-end">
           <div>
             <form class="d-flex" style="margin-right:10px;">
-              <input class="form-control me-2" type="text" placeholder="Search" />
-              <button class="btn btn-warning" type="submit">Search</button>
+              <input id="inputSearch" class="form-control me-2" type="text" placeholder="Search" />
+              <button id="btnSearchSong" class="btn btn-warning" type="submit">Search</button>
             </form>
           </div>
         </div>
@@ -37,6 +38,8 @@
           <button class="btn btn-warning" id="btnLogout">Logout</button>
         </div>
       </div>
+
+
       <div id="loginModule">
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mob-navbar"
@@ -62,9 +65,15 @@
     </div>
   </nav>
   <div class="main-body">
+
     <h4 id="welcomeUser">Welcome to Music Website</h4>
     <div id="songsModule">
 
+
+    </div>
+    <br>
+
+    <div id="playlistModule">
 
     </div>
   </div>
