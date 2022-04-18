@@ -1,0 +1,15 @@
+/* 
+  Primary color : #9bdcd3  (blue) 
+  Secondary color: #eb1e29 (red)
+*/
+body {
+  background-color: gray;
+}
+
+.header-logo-1 {
+  width: 50px;
+}
+
+.header-logo-2 {
+  width: 100px;
+}

@@ -12,54 +12,62 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
-  <style>
-    .btn-colour {
-      background-color: #9bdcd3 !important;
-
-    }
-  </style>
+  <link href="./css/style.css" rel="stylesheet">
+  <script src="./js/main.js"></script>
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <!-- <h2 class="text-warning">LogoHere</h2> -->
+        <img class="header-logo-1" logo=image src="./images/logo-1.png" alt="logo">
+        <img class="header-logo-2" logo=image src="./images/logo-2.png" alt="logo">
       </a>
-      <div class="collapse navbar-collapse justify-content-end">
-        <div>
-          <form class="d-flex" style="margin-right:10px;">
-            <input class="form-control me-2" type="text" placeholder="Search" />
-            <button class="btn btn-primary" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-      <div class="collapse navbar-collapse justify-content-end" id="mob-navbar">
-
-        <button class="btn btn-colour" id="here">Logout</button>
-      </div>
-      <!--
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mob-navbar"
-        aria-label="Toggle">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="mob-navbar">
-        <div style="display:flex;flex-direction:column">
+      <div id="logoutModule">
+        <div class="collapse navbar-collapse justify-content-end">
           <div>
-            <form class="d-flex">
-              <input class="form-control me-2" type="text" placeholder="Username" />
-              <input class="form-control me-2" type="password" placeholder="Password" />
-              <button class="btn btn-warning" type="submit">Login</button>
+            <form class="d-flex" style="margin-right:10px;">
+              <input class="form-control me-2" type="text" placeholder="Search" />
+              <button class="btn btn-warning" type="submit">Search</button>
             </form>
           </div>
-          <div>
-            <p style="color:red;">invalid user name</p>
-          </div>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end" id="mob-navbar">
+
+          <button class="btn btn-warning" id="btnLogout">Logout</button>
         </div>
       </div>
-    -->
+      <div id="loginModule">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mob-navbar"
+          aria-label="Toggle">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="mob-navbar">
+          <div style="display:flex;flex-direction:column">
+            <div>
+              <form class="d-flex">
+                <input id="inputUsername" class="form-control me-2" type="text" placeholder="Username" />
+                <input id="inputPassword" class="form-control me-2" type="password" placeholder="Password" />
+                <button id="bntLogin" class="btn btn-warning" type="submit">Login</button>
+              </form>
+            </div>
+            <div id="errroMessage">
+              <p style="color:red;">Invalid username or password!</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </nav>
+  <div class="main-body">
+    <h4 id="welcomeUser">Welcome to Music Website</h4>
+    <div id="songsModule">
+
+
+    </div>
+  </div>
 
 </body>
 
