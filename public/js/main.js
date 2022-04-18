@@ -1,8 +1,12 @@
 const serverUrl = 'http://localhost:3000/api/';
-let user = localStorage.getItem('user');
-user = JSON.parse(user);
+let currentOrder = 0;
+let offlinePlaylist = [];
+let playShuffle = false;
+let songRepeat = false;
 
 window.onload = function () {
+  let user = localStorage.getItem('user');
+  user = JSON.parse(user);
   if (user) {
     pageRefresh();
   } else {
@@ -12,7 +16,7 @@ window.onload = function () {
 
   document.getElementById('bntLogin').onclick = (event) => {
     event.preventDefault();
-    login(serverUrl);
+    login();
   }
 
   document.getElementById('btnLogout').onclick = (event) => {
@@ -24,6 +28,37 @@ window.onload = function () {
   document.getElementById('btnSearchSong').onclick = (event) => {
     event.preventDefault();
     pageRefresh();
+  }
+
+  document.getElementById('next').onclick = (event) => {
+    event.preventDefault();
+    nextSong();
+
+  }
+
+
+
+  document.getElementById('previous').onclick = (event) => {
+    event.preventDefault();
+    previousSong();
+
+  }
+
+  document.getElementById('shuffle').onclick = (event) => {
+    event.preventDefault();
+    playShuffle = !playShuffle;
+  }
+
+  document.getElementById('repeat').onclick = (event) => {
+    event.preventDefault();
+    console.log('0', songRepeat)
+    songRepeat = !songRepeat;
+    // let player = document.getElementById('audio-player');
+    // if (songRepeat) {
+    //   player.setAttribute('loop', null);
+    // } else {
+    //   player.removeAttribute('loop');
+    // }
   }
 
 
@@ -82,7 +117,8 @@ const hideLoginModule = () => {
 }
 
 const hideLogoutModule = () => {
-  document.getElementById('logoutModule').style.display = 'none';
+  document.getElementById('logoutModule-1').style.display = 'none';
+  document.getElementById('logoutModule-2').style.display = 'none';
 }
 
 const showLoginModule = () => {
@@ -90,7 +126,8 @@ const showLoginModule = () => {
 }
 
 const showLogoutModule = () => {
-  document.getElementById('logoutModule').style.display = 'block';
+  document.getElementById('logoutModule-1').style.display = 'block';
+  document.getElementById('logoutModule-2').style.display = 'block';
 }
 
 const login = async () => {
@@ -115,7 +152,8 @@ const login = async () => {
 }
 
 const getFetch = async (path) => {
-
+  let user = localStorage.getItem('user');
+  user = JSON.parse(user);
 
   return await fetch(path, {
     headers: {
@@ -137,6 +175,8 @@ const postFetch = async (path, body) => {
 }
 
 const postAuthFetch = async (path, body) => {
+  let user = localStorage.getItem('user');
+  user = JSON.parse(user);
   return await fetch(path, {
     method: 'POST',
     headers: {
@@ -166,6 +206,7 @@ const renderPlaylist = async () => {
   displayPlaylist();
 
   let playlist = await getFetch(`${serverUrl}playlist`);
+  offlinePlaylist = playlist;
   renderPlaylistTable(playlist);
 }
 
@@ -213,7 +254,8 @@ const renderPlaylistTable = (playlist) => {
             <td>${song.title}</td>
             <td>
               <div>
-                <button onclick="removeFromPlaylist('${song.songId}')">Add</button>
+                <button onclick="removeFromPlaylist('${song.songId}')">Remove</button>
+                <button onclick="playSong('${song.orderId}', '${song.urlPath}')">Play</button>
               </div>
             </td>
           </tr>
@@ -257,4 +299,76 @@ const addToPlaylist = async (songId) => {
   });
   await postAuthFetch(`${serverUrl}playlist/add`, body);
   pageRefresh();
+}
+
+const playSong = async (orderId, urlPath) => {
+
+  currentOrder = orderId;
+  let container = document.getElementById('music-player');
+  let player = document.getElementById('audio-player');
+
+  player.remove()
+
+  player = document.createElement('audio');
+  player.setAttribute('id', 'audio-player');
+  player.setAttribute("controls", "");
+  player.setAttribute("class", "customize-player");
+  player.addEventListener('ended', () => {
+    console.log('1', currentOrder, songRepeat)
+    if (songRepeat) {
+      currentSong();
+    } else {
+      nextSong();
+    }
+
+  })
+  let source = document.createElement('source');
+  source.src = urlPath;
+  source.type = 'audio/mp3';
+  player.append(source);
+  container.append(player);
+
+  player.play();
+
+}
+
+const currentSong = () => {
+  const nxtSong = offlinePlaylist.find(s => s.orderId === currentOrder);
+  console.log('2', currentOrder, nxtSong.orderId, nxtSong.urlPath)
+  playSong(currentOrder, nxtSong.urlPath);
+}
+
+const nextSong = () => {
+  if (offlinePlaylist.length > 1) {
+    let nextOrder = 0;
+    if (playShuffle) {
+      const validOrder = offlinePlaylist.filter(x => x.orderId != currentOrder).map(a => a.orderId);
+
+      const random = Math.floor(Math.random() * validOrder.length);
+      nextOrder = offlinePlaylist[random].orderId;
+    } else {
+      nextOrder = parseInt(currentOrder) + 1;
+    }
+    if (nextOrder <= offlinePlaylist.length) {
+      const nxtSong = offlinePlaylist.find(s => s.orderId === nextOrder);
+      playSong(nextOrder, nxtSong.urlPath);
+    }
+
+  }
+}
+
+const previousSong = () => {
+  if (offlinePlaylist.length > 1 && currentOrder > 1) {
+    let previousOrder = 0;
+    if (playShuffle) {
+      const validOrder = offlinePlaylist.filter(x => x.orderId != currentOrder).map(a => a.orderId);
+
+      const random = Math.floor(Math.random() * validOrder.length);
+      previousOrder = offlinePlaylist[random].orderId;
+    } else {
+      previousOrder = parseInt(currentOrder) - 1;
+    }
+    const prevSong = offlinePlaylist.find(s => s.orderId === previousOrder);
+    playSong(previousOrder, prevSong.urlPath);
+  }
 }

@@ -13,3 +13,69 @@ body {
 .header-logo-2 {
   width: 100px;
 }
+
+.search-layout {
+  width: 100%;
+  display: flex;
+}
+
+.search-layout-child {
+  display: flex;
+}
+
+.customize-player {
+  width: 700px;
+  background-color: #9bdcd3;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: #9bdcd3;
+  bottom: 0;
+  border-radius: 0px;
+  height: 100%;
+}
+
+audio::-webkit-media-controls-enclosure {
+  border-radius: 0px;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.customize-player {
+  width: 100%;
+}
+
+audio::-webkit-media-controls-timeline {
+
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 10px;
+}
+
+.media-control {
+  display: inline-block;
+  position: fixed;
+  bottom: 0;
+  left: 120px;
+  z-index: 1000;
+  padding-bottom: 14px;
+}
+
+.media-control2 {
+  display: inline-block;
+  position: fixed;
+  bottom: 0;
+  right: 120px;
+  z-index: 1000;
+  padding-bottom: 14px;
+}
+
+.music-player {
+  background-color: #9bdcd3;
+  z-index: 999;
+  width: 100%;
+  display: inline-block;
+  position: fixed;
+  bottom: 0;
+}

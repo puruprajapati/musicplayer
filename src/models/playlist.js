@@ -4,5 +4,6 @@ class UserPlaylist {
     this.userId = userId;
     this.musicId = musicId;
     this.orderId = orderId;
+    this.urlPath = urlPath;
   }
 }
