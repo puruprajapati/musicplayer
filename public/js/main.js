@@ -322,7 +322,7 @@ const addToPlaylist = async (songId) => {
 
 const playSong = async (orderId, urlPath, songTitle) => {
   console.log('playsong', orderId, urlPath)
-  currentOrder = orderId;
+  currentOrder = parseInt(orderId);
   let container = document.getElementById('music-player');
   let player = document.getElementById('audio-player');
 
@@ -361,7 +361,12 @@ const currentSong = () => {
 }
 
 const nextSong = () => {
-  if (offlinePlaylist.length > 1) {
+  if (offlinePlaylist.length == 1) {
+    // replay the song
+    const nxtSong = offlinePlaylist.find(s => s.orderId === currentOrder);
+    console.log(nxtSong, currentOrder);
+    playSong(currentOrder, nxtSong.urlPath, nxtSong.title);
+  } else if (offlinePlaylist.length > 0) {
     let nextOrder = 0;
     if (playShuffle) {
       const validOrder = offlinePlaylist.filter(x => x.orderId != currentOrder).map(a => a.orderId);
@@ -369,7 +374,11 @@ const nextSong = () => {
       console.log('nextsong', validOrder, nextOrder, offlinePlaylist.length);
     } else {
       nextOrder = parseInt(currentOrder) + 1;
+      if (nextOrder > offlinePlaylist.length) {
+        nextOrder = 1;
+      }
     }
+    console.log('checknextsongcond', nextOrder, offlinePlaylist.length)
     if (nextOrder <= offlinePlaylist.length) {
       const nxtSong = offlinePlaylist.find(s => s.orderId === nextOrder);
       playSong(nextOrder, nxtSong.urlPath, nxtSong.title);
@@ -379,7 +388,11 @@ const nextSong = () => {
 }
 
 const previousSong = () => {
-  if (offlinePlaylist.length > 1 && currentOrder > 1) {
+  if (offlinePlaylist.length == 1) {
+    // replay the song
+    const prevSong = offlinePlaylist.find(s => s.orderId === currentOrder);
+    playSong(currentOrder, prevSong.urlPath, prevSong.title);
+  } else if (offlinePlaylist.length > 0 && currentOrder > 0) {
     let previousOrder = 0;
     if (playShuffle) {
       const validOrder = offlinePlaylist.filter(x => x.orderId != currentOrder).map(a => a.orderId);
@@ -388,6 +401,9 @@ const previousSong = () => {
       console.log('previoussong', validOrder, previousOrder, offlinePlaylist.length);
     } else {
       previousOrder = parseInt(currentOrder) - 1;
+      if (previousOrder == 0) {
+        previousOrder = offlinePlaylist.length;
+      }
     }
     const prevSong = offlinePlaylist.find(s => s.orderId === previousOrder);
     playSong(previousOrder, prevSong.urlPath, prevSong.title);
