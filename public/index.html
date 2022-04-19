@@ -15,6 +15,7 @@
   <link href="./css/style.css" rel="stylesheet">
   <script src="./js/main.js"></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
 </head>
@@ -27,7 +28,6 @@
         <img class="header-logo-2" logo=image src="./images/logo-2.png" alt="logo">
       </a>
 
-      <!-- <div id="logoutModule"> -->
       <div class="collapse navbar-collapse justify-content-center search-layout">
         <div class="search-layout-child">
           <div id="logoutModule-1">
@@ -47,7 +47,6 @@
           </div>
         </div>
       </div>
-      <!-- </div> -->
 
 
       <div id="loginModule">
@@ -75,13 +74,13 @@
   </nav>
   <div class="main-body">
 
-    <h4 id="welcomeUser">Welcome to Music Website</h4>
-    <div id="songsModule">
+    <h4 id="welcomeUser" class="welcome-style">Welcome to Music Website</h4>
+    <div id="songsModule" class="style-table">
     </div>
 
     <br>
 
-    <div id="playlistModule">
+    <div id="playlistModule" class="style-table">
     </div>
   </div>
 
@@ -90,16 +89,19 @@
 
   <div id="music-player" class="music-player">
 
+    <div>
+      <marquee id="now-playing" behaviour="scroll" direction="left" class="now-playing">Waiting for song....</marquee>
+    </div>
     <div class="media-control">
-
-      <button id="previous" class="btn">Previous</button>
-      <button id="next" class="btn">Next</button>
+      <i id="previous" class="fa fa-fast-backward" title="Previous"></i>
+      <i id="next" class="fa fa-fast-forward" title="Forward"></i>
     </div>
 
     <audio id="audio-player" controls class="customize-player"></audio>
     <div class="media-control2">
-      <button id="repeat" class="btn">Next</button>
-      <button id="shuffle" class="btn">Previous</button>
+
+      <i id="repeat" class="fa fa-repeat" title="Repeat"></i>
+      <i id="shuffle" class="fa fa-random" title="Shuffle"></i>
     </div>
   </div>
 

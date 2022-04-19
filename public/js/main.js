@@ -47,18 +47,25 @@ window.onload = function () {
   document.getElementById('shuffle').onclick = (event) => {
     event.preventDefault();
     playShuffle = !playShuffle;
+
+    let player = document.getElementById('shuffle');
+    if (playShuffle) {
+      player.setAttribute("class", "fa fa-random shuffle-active")
+    } else {
+      player.setAttribute("class", "fa fa-random")
+    }
   }
 
   document.getElementById('repeat').onclick = (event) => {
     event.preventDefault();
-    console.log('0', songRepeat)
     songRepeat = !songRepeat;
-    // let player = document.getElementById('audio-player');
-    // if (songRepeat) {
-    //   player.setAttribute('loop', null);
-    // } else {
-    //   player.removeAttribute('loop');
-    // }
+
+    let player = document.getElementById('repeat');
+    if (songRepeat) {
+      player.setAttribute("class", "fa fa-repeat shuffle-active")
+    } else {
+      player.setAttribute("class", "fa fa-repeat")
+    }
   }
 
 
@@ -71,6 +78,7 @@ const pageInit = () => {
   displayWelcomeMessage();
   hideSongModule();
   hidePlaylist();
+  hideMusicPlayer();
 }
 
 const pageRefresh = () => {
@@ -79,6 +87,15 @@ const pageRefresh = () => {
   showLogoutModule();
   renderSongs();
   renderPlaylist();
+  displayMusicPlayer();
+}
+
+const displayMusicPlayer = () => {
+  document.getElementById('music-player').style.display = 'block';
+}
+
+const hideMusicPlayer = () => {
+  document.getElementById('music-player').style.display = 'none';
 }
 
 const displaySongModule = () => {
@@ -148,6 +165,7 @@ const login = async () => {
 
     renderSongs();
     renderPlaylist();
+    displayMusicPlayer();
   }
 }
 
@@ -220,7 +238,7 @@ const renderSongTable = (songs) => {
             <th scope="row">${sn}</th>
             <td>${song.title}</td>
             <td>${song.releaseDate}</td>
-            <td><button onclick="addToPlaylist('${song.id}')">Add</button></td>
+            <td><i class="fa fa-plus" title="Add this song to playlist" onclick="addToPlaylist('${song.id}')"></i></td>
     `;
   });
 
@@ -253,9 +271,10 @@ const renderPlaylistTable = (playlist) => {
             <th scope="row">${song.orderId}</th>
             <td>${song.title}</td>
             <td>
-              <div>
-                <button onclick="removeFromPlaylist('${song.songId}')">Remove</button>
-                <button onclick="playSong('${song.orderId}', '${song.urlPath}')">Play</button>
+              <div class="playlist-control">
+              <i class='fa fa-remove' title="Remove song from playlist" onclick="removeFromPlaylist('${song.songId}')"></i>
+              <i class='fa fa-play' title="Play this song" onclick="playSong('${song.orderId}', '${song.urlPath}', '${song.title}')"></i>
+                
               </div>
             </td>
           </tr>
@@ -301,8 +320,8 @@ const addToPlaylist = async (songId) => {
   pageRefresh();
 }
 
-const playSong = async (orderId, urlPath) => {
-
+const playSong = async (orderId, urlPath, songTitle) => {
+  console.log('playsong', orderId, urlPath)
   currentOrder = orderId;
   let container = document.getElementById('music-player');
   let player = document.getElementById('audio-player');
@@ -314,7 +333,7 @@ const playSong = async (orderId, urlPath) => {
   player.setAttribute("controls", "");
   player.setAttribute("class", "customize-player");
   player.addEventListener('ended', () => {
-    console.log('1', currentOrder, songRepeat)
+    console.log('playSong-repeat', songRepeat)
     if (songRepeat) {
       currentSong();
     } else {
@@ -328,14 +347,17 @@ const playSong = async (orderId, urlPath) => {
   player.append(source);
   container.append(player);
 
+  let songTitleDisplay = document.getElementById('now-playing');
+  songTitleDisplay.innerHTML = `Now Playing........    ${songTitle}`
   player.play();
 
 }
 
 const currentSong = () => {
-  const nxtSong = offlinePlaylist.find(s => s.orderId === currentOrder);
-  console.log('2', currentOrder, nxtSong.orderId, nxtSong.urlPath)
-  playSong(currentOrder, nxtSong.urlPath);
+  console.log('currentSong-curerntOrder', currentOrder, offlinePlaylist)
+  const nxtSong = offlinePlaylist.find(s => s.orderId == currentOrder);
+
+  playSong(currentOrder, nxtSong.urlPath, nxtSong.title);
 }
 
 const nextSong = () => {
@@ -343,15 +365,14 @@ const nextSong = () => {
     let nextOrder = 0;
     if (playShuffle) {
       const validOrder = offlinePlaylist.filter(x => x.orderId != currentOrder).map(a => a.orderId);
-
-      const random = Math.floor(Math.random() * validOrder.length);
-      nextOrder = offlinePlaylist[random].orderId;
+      nextOrder = getRandomItem(validOrder);
+      console.log('nextsong', validOrder, nextOrder, offlinePlaylist.length);
     } else {
       nextOrder = parseInt(currentOrder) + 1;
     }
     if (nextOrder <= offlinePlaylist.length) {
       const nxtSong = offlinePlaylist.find(s => s.orderId === nextOrder);
-      playSong(nextOrder, nxtSong.urlPath);
+      playSong(nextOrder, nxtSong.urlPath, nxtSong.title);
     }
 
   }
@@ -363,12 +384,18 @@ const previousSong = () => {
     if (playShuffle) {
       const validOrder = offlinePlaylist.filter(x => x.orderId != currentOrder).map(a => a.orderId);
 
-      const random = Math.floor(Math.random() * validOrder.length);
-      previousOrder = offlinePlaylist[random].orderId;
+      previousOrder = getRandomItem(validOrder);
+      console.log('previoussong', validOrder, previousOrder, offlinePlaylist.length);
     } else {
       previousOrder = parseInt(currentOrder) - 1;
     }
     const prevSong = offlinePlaylist.find(s => s.orderId === previousOrder);
-    playSong(previousOrder, prevSong.urlPath);
+    playSong(previousOrder, prevSong.urlPath, prevSong.title);
   }
+}
+
+const getRandomItem = (arr) => {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  const item = arr[randomIndex];
+  return item;
 }

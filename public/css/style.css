@@ -3,7 +3,20 @@
   Secondary color: #eb1e29 (red)
 */
 body {
-  background-color: gray;
+  background-color: rgb(19, 3, 3);
+}
+
+h2,
+h3,
+h4,
+h5 {
+  color: #9bdcd3;
+  font-family: fantasy;
+}
+
+.welcome-style {
+  margin: 20px;
+  padding: 20px;
 }
 
 .header-logo-1 {
@@ -23,13 +36,37 @@ body {
   display: flex;
 }
 
+.style-table {
+  margin: 5px 20px 25px;
+  padding: 5px 20px 15px;
+}
+
+playlist-control {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+i {
+  margin-right: 20px;
+}
+
+i:hover {
+  cursor: pointer;
+  /* margin: 10px 0px; */
+}
+
+td i:hover {
+  text-decoration: none;
+  color: #ffc107
+}
+
 .customize-player {
   width: 700px;
-  background-color: #9bdcd3;
+  background-color: #ffc107;
 }
 
 audio::-webkit-media-controls-panel {
-  background-color: #9bdcd3;
+  background-color: #ffc107;
   bottom: 0;
   border-radius: 0px;
   height: 100%;
@@ -57,9 +94,9 @@ audio::-webkit-media-controls-timeline {
   display: inline-block;
   position: fixed;
   bottom: 0;
-  left: 120px;
+  left: 140px;
   z-index: 1000;
-  padding-bottom: 14px;
+  padding-bottom: 20px;
 }
 
 .media-control2 {
@@ -68,7 +105,13 @@ audio::-webkit-media-controls-timeline {
   bottom: 0;
   right: 120px;
   z-index: 1000;
-  padding-bottom: 14px;
+  padding-bottom: 20px;
+}
+
+.media-control2 * {
+  margin-left: 10px;
+  margin-right: 10px;
+
 }
 
 .music-player {
@@ -78,4 +121,17 @@ audio::-webkit-media-controls-timeline {
   display: inline-block;
   position: fixed;
   bottom: 0;
+}
+
+.shuffle-active {
+  padding: 10px;
+  margin-bottom: -10px;
+  border-radius: 50%;
+  margin-left: 0px;
+  margin-right: 0px;
+  background-color: #725706;
+}
+
+.now-playing {
+  font-weight: bold;
 }
