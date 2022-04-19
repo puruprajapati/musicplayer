@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const path = require('path');
 
 const router = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
@@ -14,13 +15,14 @@ app.use(helmet());
 app.use(compression());
 app.use(cors());
 
-//make way for some custom css, js and images
-// app.use('/css', express.static(__dirname + '/public/css'));
-// app.use('/js', express.static(__dirname + '/public/js'));
-// app.use('/images', express.static(__dirname + '/public/images'));
+//make way for custom view
+app.use('/views', express.static(__dirname + '/public/views'));
 
 app.use('/api', router);
-// app.all('*', )  // not found
+app.use((req, res, next) => {
+  res.status(404).sendFile(path.join(__dirname, 'views', 'error-404.html'));
+});
+
 app.use(errorHandler);
 
 app.listen(3000, () => {
